@@ -4,20 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A fork of [QMK Firmware](https://qmk.fm) — an open-source keyboard firmware based on TMK. This fork contains the keymap for a **Crossed Keys Nightmare** (50% keyboard with Pro Micro).
+A fork of [QMK Firmware](https://qmk.fm) — an open-source keyboard firmware based on TMK. This fork contains the custom keymap for a **Helix rev2** split keyboard (4-row configuration with OLED enabled).
+
+## This Fork's Custom Keymap
+
+The owner's keymap lives at `keyboards/helix/rev2/keymaps/jijiimac/`. It defines 3 layers on a 4-row Helix rev2:
+
+- **Layer 0** — QWERTY base. MO(1) on right thumb for Layer 1, MO(2) on left thumb for Layer 2.
+- **Layer 1** — Arrow keys (HJKL-style on left) + numpad (right side).
+- **Layer 2** — Symbols: `!@#$%^` row, `*&[]_=` row, `<>` row.
+
+Key `rules.mk` settings: `HELIX_ROWS = 4`, `OLED_ENABLE = yes`, `LED_ANIMATIONS = yes`. All other features (mouse keys, audio, backlight, MIDI, Bluetooth, etc.) are disabled to save firmware size.
 
 ## Build Commands
 
 ```bash
-# Build firmware for the Nightmare keyboard
-make nightmare:default
+# Build this fork's keymap
+make helix/rev2:jijiimac
+
+# Flash to keyboard via avrdude
+make helix/rev2:jijiimac:avrdude
 
 # General pattern: make <keyboard>:<keymap>[:<target>]
 make planck/rev4:default          # specific revision
-make nightmare:default:dfu        # build and flash via DFU bootloader
 
 # Build all keymaps for a keyboard
-make nightmare:all
+make helix/rev2:all
 
 # Run all unit tests (Google Test, compiled natively)
 make test
@@ -29,7 +41,7 @@ make test:basic
 make test:clean
 
 # Clean build artifacts for a keyboard
-make nightmare:default:clean
+make helix/rev2:jijiimac:clean
 ```
 
 Build output goes to `.build/`. Final firmware is a `.hex` (AVR) or `.bin` (ARM) file at the repo root.
